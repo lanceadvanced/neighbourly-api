@@ -11,31 +11,16 @@ def hello_world():
 
 @app.route('/postendpoint', methods=['POST'])
 def handle_post():
-    # Nehmen Sie den Wert von "requestText" aus der POST-Anfrage
     request_text = request.json.get('requestText', 'Kein Text gesendet')
-    community_id = 666
+    community_id = 1
 
-    # Bereiten Sie die Daten für die Weiterleitung vor
-    data_to_send = {
-        "requestText": request_text
-    }
+    offers = requests.get(f'https://neighbourly.lanzeray.ch/api/sample-offers/{community_id}')
 
-    # Senden Sie eine POST-Anfrage an die externe URL
-    response_from_external_api = requests.post(f'https://neighbourly.lanzeray.ch/api/testRequest/{community_id}',
-                                               json=data_to_send)
-
-    # Hier können Sie den Statuscode und die Antwort von der externen API überprüfen
-    # Zum Beispiel: response_from_external_api.json() oder response_from_external_api.status_code
-
-    # Stellen Sie die Antwort zusammen
     response_data = {
-        "originalRequest": request_text,
-        "foundOffer": "Dies ist ein Beispielangebot, basierend auf Ihrem Request.",
-        # Optional: Fügen Sie Informationen aus der Antwort der externen API hinzu
-        "externalApiResponse": response_from_external_api.json().get('message')
+        'offers': offers,
+        'requested_service': request_text
     }
 
-    # Senden Sie das Datenobjekt als JSON-Antwort zurück
     return jsonify(response_data), 200
 
 
