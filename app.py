@@ -17,7 +17,7 @@ def handle_post():
     offers = requests.get(f'https://neighbourly.lanzeray.ch/api/sample-offers/{community_id}')
 
     response_data = {
-        'offers': offers,
+        'offers': offers.json(),
         'requested_service': request_text
     }
 
